@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Cube rotation with image</title>
+        <meta charset="utf-8">
+        <style>
+            body {
+                margin: 0px;
+                background-color: #000000;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+
+        <script src="js/three.min.js"></script>
+
+        <script>
+            var camera, scene, renderer;
+            var mesh;
+
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
+
+            /* Setsize is use for the define screen size window.innerWidth and height
+             * Will taken full screen view for dispaly object
+             */
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+            
+            /*
+             * @type @exp;THREE
+             * @pro;ImageUtils
+             * A Helper class to ease the loading of images of different types.
+             * @call;loadTexture
+             */
+
+            var texture = THREE.ImageUtils.loadTexture('images/crate.gif');
+            //texture.anisotropy = renderer.getMaxAnisotropy();
+
+            var geometry = new THREE.BoxGeometry(200, 200, 200);
+            /*
+             * Material is use for the drawing geometries in simaple saded
+             * There are different parameters in MeshBasicMaterial
+             */
+            var material = new THREE.MeshBasicMaterial({map: texture});
+            mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            camera.position.z = 400;
+
+            window.addEventListener('resize', onWindowResize, false);
+
+            function onWindowResize() {
+
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+
+                renderer.setSize(window.innerWidth, window.innerHeight);
+
+            }
+
+            function animate() {
+
+                requestAnimationFrame(animate);
+
+                mesh.rotation.x += 0.005;
+                mesh.rotation.y += 0.01;
+
+                renderer.render(scene, camera);
+
+            }
+            animate();
+
+        </script>
+
+    </body>
+</html>
